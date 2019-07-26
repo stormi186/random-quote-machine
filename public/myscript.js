@@ -1,6 +1,3 @@
-import React from 'react';
-import './index.css';
-
 const quotes = [
   {quote: "Vent ikke på lederen. Gjør det selv, person til person.",
    author: "Mor Theresa"},
@@ -54,77 +51,76 @@ const quotes = [
    author: "Charles Revson"}
 ]
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      color: [50, 100, 150],
-      quote: quotes[1][0],
-      author: quotes[1][1] 
-    };
-    this.handleClick = this.handleClick.bind(this);
-  }
+var Random = React.createClass({
 
-  componentDidMount() {
-      this.applyColor();
-    this.changeQuote();
-  }
+getInitialState: function () {
+  return {
+    color: [50, 100, 150],
+    quote: quotes[1][0],
+    author: quotes[1][1]    
+  };
+},
 
-  componentDidUpdate() {
-    this.applyColor();
-    this.changeQuote();
-  }
+componentDidMount: function () {
+  this.applyColor();
+  this.changeQuote();
+},
 
-  formatColor(arr) {
-    return 'rgb(' + arr.join(', ') + ')';
-  }
+componentDidUpdate: function () {
+  this.applyColor();
+  this.changeQuote();
+},
 
-  applyColor() {
-    var color = this.formatColor(this.state.color);
-    document.body.style.backgroundColor = color;
-    document.getElementById('wrapper').style.background = color;
-    document.getElementById('text').style.color = color;
-    document.getElementById('author').style.color = color;
-    document.getElementById('tweet-quote').style.background = color;
-    document.getElementById('facebook-quote').style.background = color;
-    document.getElementById('quote-sign').style.color = color
-    document.getElementById('quote-sign-2').style.color = color;
-    document.getElementById('new-quote').style.background = color;     
-  }
+formatColor: function (arr) {
+  return 'rgb(' + arr.join(', ') + ')';
+},
 
-  changeQuote() {
-    var quote = quotes[Math.floor(Math.random()*quotes.length)].quote;
-    var author = quotes[Math.floor(Math.random()*quotes.length)].author;
-    document.getElementById('text').innerHTML = quote;
-    document.getElementById('author').innerHTML = author;
-    var forShareQuote = quote + " - " + author;
-    forShareQuote.replace(/\s/g, "+");
-    var tweetUrl = "https://twitter.com/intent/tweet?text=" + forShareQuote;
-    document.getElementById('tweet-quote').setAttribute("href", tweetUrl);
-  }
+applyColor: function () {
+  var color = this.formatColor(this.state.color);
+  document.body.style.backgroundColor = color;
+  document.getElementById('wrapper').style.background = color;
+  document.getElementById('text').style.color = color;
+  document.getElementById('author').style.color = color;
+  document.getElementById('tweet-quote').style.background = color;
+  document.getElementById('facebook-quote').style.background = color;
+  document.getElementById('quote-sign').style.color = color
+  document.getElementById('quote-sign-2').style.color = color;
+  document.getElementById('new-quote').style.background = color;     
+},
 
-  chooseColor() {
-    for (var i = 0, random = []; i < 3; i++) {
-      random.push(Math.floor(Math.random()*256));
-    }
-    return random; 
-  }
+changeQuote: function () {
+  var quote = quotes[Math.floor(Math.random()*quotes.length)].quote;
+  var author = quotes[Math.floor(Math.random()*quotes.length)].author;
+  document.getElementById('text').innerHTML = quote;
+  document.getElementById('author').innerHTML = author;
+  forShareQuote = quote+" - "+author;
+  forShareQuote.replace(/\s/g, "+");
+  tweetUrl = "https://twitter.com/intent/tweet?text=" + forShareQuote;
+  document.getElementById('tweet-quote').setAttribute("href", tweetUrl);
+},
 
-  handleClick() {
-    this.setState({
-      color: this.chooseColor()
-    });
+chooseColor: function () {
+  for (var i = 0, random = []; i < 3; i++) {
+    random.push(Math.floor(Math.random()*256));
   }
+  return random; 
+},
 
-  render() {
-    return (
-      <div>
-        <button className="button" id="new-quote" onClick={this.handleClick}>
-          Nytt sitat
-        </button>
-      </div>
-    );
-  }
+handleClick: function () {
+  this.setState({
+    color: this.chooseColor()
+  });
+},
+
+render: function () {
+  return (
+    <div>
+      <button className="button" id="new-quote" onClick={this.handleClick}>
+        Nytt sitat
+      </button>
+    </div>
+  );
 }
+});
 
-
+ReactDOM.render(<Random />, document.getElementById('new'));
